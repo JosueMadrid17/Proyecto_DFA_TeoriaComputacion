@@ -1,4 +1,4 @@
-#include "VentanaPrincipal.h"
+#include "InterfazVisual/VentanaPrincipal.h"
 #include <QApplication>
 
 int main(int argc, char *argv[])
