@@ -21,6 +21,8 @@ public:
 
     void Asignar(const char* Texto);
     void AgregarCaracter(char Caracter);
+    void AgregarTexto(const char* Texto);
+    void AgregarCadena(const CadenaManual& OtraCadena);
 
     int ObtenerLongitud() const;
     bool EstaVacia() const;

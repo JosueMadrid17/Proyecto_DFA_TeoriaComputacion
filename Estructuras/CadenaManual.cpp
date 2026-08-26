@@ -146,3 +146,25 @@ bool CadenaManual::EsIgual(const char* Texto) const {
     }
     return Actual == nullptr && *CaracterTexto == '\0';
 }
+
+void CadenaManual::AgregarTexto(const char* Texto) {
+    if (Texto == nullptr) {
+        return;
+    }
+
+    const char* Actual = Texto;
+
+    while (*Actual != '\0') {
+        AgregarCaracter(*Actual);
+        Actual++;
+    }
+}
+
+void CadenaManual::AgregarCadena(const CadenaManual& OtraCadena) {
+    Nodo<char>* Actual = OtraCadena.Primero;
+
+    while (Actual != nullptr) {
+        AgregarCaracter(Actual->ObtenerDato());
+        Actual = Actual->ObtenerSiguiente();
+    }
+}
