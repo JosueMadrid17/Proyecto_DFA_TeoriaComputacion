@@ -25,6 +25,8 @@ public:
 
     Estado* AgregarEstado(const char* Nombre);
     Simbolo* AgregarSimbolo(const char* Valor);
+    Estado* AgregarEstado(const CadenaManual& Nombre);
+    Simbolo* AgregarSimbolo(const CadenaManual& Valor);
     Transicion* AgregarTransicion(Estado* Origen, Simbolo* SimboloUsado, Estado* Destino);
 
     void EstablecerEstadoInicial(Estado* NuevoEstadoInicial);

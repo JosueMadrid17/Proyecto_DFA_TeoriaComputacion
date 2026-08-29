@@ -19,7 +19,21 @@ Estado* Automata::AgregarEstado(const char* Nombre) {
     return NuevoEstado;
 }
 
+Estado* Automata::AgregarEstado(const CadenaManual& Nombre) {
+    Estado* NuevoEstado = new Estado(Nombre);
+    Estados.Agregar(NuevoEstado);
+    Validado = false;
+    return NuevoEstado;
+}
+
 Simbolo* Automata::AgregarSimbolo(const char* Valor) {
+    Simbolo* NuevoSimbolo = new Simbolo(Valor);
+    Alfabeto.Agregar(NuevoSimbolo);
+    Validado = false;
+    return NuevoSimbolo;
+}
+
+Simbolo* Automata::AgregarSimbolo(const CadenaManual& Valor) {
     Simbolo* NuevoSimbolo = new Simbolo(Valor);
     Alfabeto.Agregar(NuevoSimbolo);
     Validado = false;
