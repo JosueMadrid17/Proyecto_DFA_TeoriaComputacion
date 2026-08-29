@@ -9,8 +9,10 @@ private:
 public:
     Estado();
     Estado(const char* NombreNuevo);
+    Estado(const CadenaManual& NombreNuevo);
 
     void EstablecerNombre(const char* NombreNuevo);
+    void EstablecerNombre(const CadenaManual& NombreNuevo);
 
     const CadenaManual& ObtenerNombre() const;
 
