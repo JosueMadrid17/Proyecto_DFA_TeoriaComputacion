@@ -4,6 +4,7 @@
 #include "../Automatas/Estado.h"
 #include "../Automatas/Simbolo.h"
 #include "../Automatas/Transicion.h"
+#include "../Automatas/RegistroAutomatas.h"
 #include "../Validacion/ValidadorDFA.h"
 #include "../Validacion/ResultadoValidacion.h"
 #include "../Validacion/ErrorValidacion.h"
@@ -26,7 +27,8 @@
 #include <QScrollArea>
 #include <QSizePolicy>
 
-PaginaCrearAutomata::PaginaCrearAutomata(QWidget* parent) : QWidget(parent) {
+PaginaCrearAutomata::PaginaCrearAutomata(RegistroAutomatas* RegistroCompartido, QWidget* parent) : QWidget(parent) {
+    Registro = RegistroCompartido;
     AutomataActual = new Automata();
     Validador = new ValidadorDFA();
     Resultado = new ResultadoValidacion();
@@ -202,15 +204,18 @@ void PaginaCrearAutomata::ConstruirInterfaz() {
     QHBoxLayout* LayoutBotones = new QHBoxLayout();
     QPushButton* BotonVolver = new QPushButton("VOLVER");
     QPushButton* BotonLimpiar = new QPushButton("LIMPIAR");
+    QPushButton* BotonGuardar = new QPushButton("GUARDAR AUTOMATA");
     QPushButton* BotonValidar = new QPushButton("VALIDAR AUTOMATA");
 
     BotonVolver->setFixedSize(150, 45);
     BotonLimpiar->setFixedSize(150, 45);
+    BotonGuardar->setFixedSize(200, 45);
     BotonValidar->setFixedSize(200, 45);
 
     LayoutBotones->addWidget(BotonVolver);
     LayoutBotones->addStretch();
     LayoutBotones->addWidget(BotonLimpiar);
+    LayoutBotones->addWidget(BotonGuardar);
     LayoutBotones->addWidget(BotonValidar);
     LayoutPrincipal->addLayout(LayoutBotones);
 
@@ -220,6 +225,7 @@ void PaginaCrearAutomata::ConstruirInterfaz() {
     connect(BotonAgregarTransicion, &QPushButton::clicked, this, &PaginaCrearAutomata::AgregarTransicion);
     connect(BotonValidar, &QPushButton::clicked, this, &PaginaCrearAutomata::ValidarAutomata);
     connect(BotonLimpiar, &QPushButton::clicked, this, &PaginaCrearAutomata::LimpiarAutomata);
+    connect(BotonGuardar, &QPushButton::clicked, this, &PaginaCrearAutomata::GuardarAutomata);
     connect(BotonVolver, &QPushButton::clicked, this, &PaginaCrearAutomata::SolicitarVolver);
     connect(ComboEstadoInicial, &QComboBox::currentIndexChanged, this, [this](int) {
         AutomataActual->EstablecerValidado(false);
@@ -459,4 +465,57 @@ QString PaginaCrearAutomata::ConvertirAQString(const CadenaManual& Texto) const 
         Posicion++;
     }
     return QString::fromUtf8(Datos);
+}
+
+void PaginaCrearAutomata::GuardarAutomata() {
+    if (Registro == nullptr) {
+        SalidaValidacion->setPlainText("No se pudo acceder al registro de automatas.");
+        return;
+    }
+
+    if (!AutomataActual->EstaValidado()) {
+        SalidaValidacion->setPlainText("Debe validar correctamente el automata antes de guardarlo.");
+        return;
+    }
+
+    Automata* AutomataGuardado = AutomataActual;
+
+    if (!Registro->GuardarAutomata(AutomataGuardado)) {
+        SalidaValidacion->setPlainText("No se pudo guardar el automata.");
+        return;
+    }
+
+    int Numero = Registro->ObtenerCantidad();
+    QString Nombre = ConstruirNombreAutomata(AutomataGuardado, Numero);
+
+    AutomataActual = new Automata();
+    Vista->EstablecerAutomata(AutomataActual);
+
+    LimpiarAutomata();
+    SalidaValidacion->setPlainText(Nombre + " guardado.");
+}
+
+QString PaginaCrearAutomata::ConstruirNombreAutomata(Automata* AutomataGuardado, int Numero) const {
+    QString Nombre = "Automata ";
+    Nombre += QString::number(Numero);
+    Nombre += " (Σ={";
+
+    Nodo<Simbolo*>* Actual = AutomataGuardado->ObtenerPrimerSimbolo();
+    bool PrimerSimbolo = true;
+
+    while (Actual != nullptr) {
+        Simbolo* SimboloActual = Actual->ObtenerDato();
+
+        if (SimboloActual != nullptr) {
+            if (!PrimerSimbolo) {
+                Nombre += ",";
+            }
+            Nombre += ConvertirAQString(SimboloActual->ObtenerValor());
+            PrimerSimbolo = false;
+        }
+        Actual = Actual->ObtenerSiguiente();
+    }
+
+    Nombre += "})";
+    return Nombre;
 }

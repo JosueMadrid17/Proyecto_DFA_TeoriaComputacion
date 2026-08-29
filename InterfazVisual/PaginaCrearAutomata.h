@@ -13,6 +13,7 @@ class ValidadorDFA;
 class ResultadoValidacion;
 class CadenaManual;
 class VistaAutomata;
+class RegistroAutomatas;
 
 class PaginaCrearAutomata : public QWidget {
     Q_OBJECT
@@ -22,6 +23,7 @@ private:
     ValidadorDFA* Validador;
     ResultadoValidacion* Resultado;
     VistaAutomata* Vista;
+    RegistroAutomatas* Registro;
 
     QLineEdit* EntradaEstado;
     QLineEdit* EntradaSimbolo;
@@ -46,15 +48,17 @@ private:
     void ValidarAutomata();
     void LimpiarAutomata();
     void ActualizarEstadosFinales();
+    void GuardarAutomata();
 
     CadenaManual ConvertirACadenaManual(const QString& Texto) const;
     QString ConvertirAQString(const CadenaManual& Texto) const;
+    QString ConstruirNombreAutomata(Automata* AutomataGuardado, int Numero) const;
 
 signals:
     void SolicitarVolver();
 
 public:
-    PaginaCrearAutomata(QWidget* parent = nullptr);
+    PaginaCrearAutomata(RegistroAutomatas* RegistroCompartido, QWidget* parent = nullptr);
     ~PaginaCrearAutomata();
 };
 
