@@ -1,5 +1,6 @@
 #include "VentanaPrincipal.h"
 #include "PaginaCrearAutomata.h"
+#include "../Automatas/RegistroAutomatas.h"
 #include <QWidget>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -9,10 +10,13 @@
 #include <QCursor>
 
 VentanaPrincipal::VentanaPrincipal(QWidget* parent) : QMainWindow(parent) {
+    Registro = new RegistroAutomatas();
     ConstruirInterfaz();
 }
 
-VentanaPrincipal::~VentanaPrincipal() {}
+VentanaPrincipal::~VentanaPrincipal() {
+    delete Registro;
+}
 
 void VentanaPrincipal::ConstruirInterfaz() {
     setWindowTitle("Sistema de Autómatas Finitos Deterministas");
@@ -22,7 +26,7 @@ void VentanaPrincipal::ConstruirInterfaz() {
 
     AplicarEstilos();
 
-    PaginaCreacion = new PaginaCrearAutomata();
+    PaginaCreacion = new PaginaCrearAutomata(Registro);
 
     ConstruirPaginaInicio();
 
