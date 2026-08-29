@@ -4,6 +4,7 @@
 
 class QWidget;
 class QStackedWidget;
+class PaginaCrearAutomata;
 
 class VentanaPrincipal : public QMainWindow {
     Q_OBJECT
@@ -11,6 +12,7 @@ class VentanaPrincipal : public QMainWindow {
 private:
     QStackedWidget* Paginas;
     QWidget* PaginaInicio;
+    PaginaCrearAutomata* PaginaCreacion;
 
     void ConstruirInterfaz();
     void ConstruirPaginaInicio();

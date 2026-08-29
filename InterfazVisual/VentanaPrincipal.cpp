@@ -1,4 +1,5 @@
 #include "VentanaPrincipal.h"
+#include "PaginaCrearAutomata.h"
 #include <QWidget>
 #include <QStackedWidget>
 #include <QVBoxLayout>
@@ -20,9 +21,17 @@ void VentanaPrincipal::ConstruirInterfaz() {
     setCentralWidget(Paginas);
 
     AplicarEstilos();
+
+    PaginaCreacion = new PaginaCrearAutomata();
+
     ConstruirPaginaInicio();
 
+    Paginas->addWidget(PaginaCreacion);
     Paginas->setCurrentWidget(PaginaInicio);
+
+    connect(PaginaCreacion, &PaginaCrearAutomata::SolicitarVolver, this, [this]() {
+        Paginas->setCurrentWidget(PaginaInicio);
+    });
 }
 
 void VentanaPrincipal::AplicarEstilos() {
@@ -77,6 +86,9 @@ void VentanaPrincipal::ConstruirPaginaInicio() {
     Subtitulo->setFont(FuenteSubtitulo);
 
     QPushButton* BotonCrearAutomata = new QPushButton("CREAR Y VALIDAR AUTÓMATA");
+    connect(BotonCrearAutomata, &QPushButton::clicked, this, [this]() {
+        Paginas->setCurrentWidget(PaginaCreacion);
+    });
     QPushButton* BotonUnion = new QPushButton("UNIÓN DE AUTÓMATAS");
     QPushButton* BotonPruebaCadenas = new QPushButton("PRUEBA DE CADENAS");
 
