@@ -1,5 +1,6 @@
 #include "VentanaPrincipal.h"
 #include "PaginaCrearAutomata.h"
+#include "PaginaUnionAutomatas.h"
 #include "../Automatas/RegistroAutomatas.h"
 #include <QWidget>
 #include <QStackedWidget>
@@ -27,13 +28,18 @@ void VentanaPrincipal::ConstruirInterfaz() {
     AplicarEstilos();
 
     PaginaCreacion = new PaginaCrearAutomata(Registro);
+    PaginaUnion = new PaginaUnionAutomatas(Registro);
 
     ConstruirPaginaInicio();
 
     Paginas->addWidget(PaginaCreacion);
+    Paginas->addWidget(PaginaUnion);
     Paginas->setCurrentWidget(PaginaInicio);
 
     connect(PaginaCreacion, &PaginaCrearAutomata::SolicitarVolver, this, [this]() {
+        Paginas->setCurrentWidget(PaginaInicio);
+    });
+    connect(PaginaUnion, &PaginaUnionAutomatas::SolicitarVolver, this, [this]() {
         Paginas->setCurrentWidget(PaginaInicio);
     });
 }
@@ -94,6 +100,10 @@ void VentanaPrincipal::ConstruirPaginaInicio() {
         Paginas->setCurrentWidget(PaginaCreacion);
     });
     QPushButton* BotonUnion = new QPushButton("UNIÓN DE AUTÓMATAS");
+    connect(BotonUnion, &QPushButton::clicked, this, [this]() {
+        PaginaUnion->ActualizarAutomatasGuardados();
+        Paginas->setCurrentWidget(PaginaUnion);
+    });
     QPushButton* BotonPruebaCadenas = new QPushButton("PRUEBA DE CADENAS");
 
     BotonCrearAutomata->setFixedSize(540, 72);
