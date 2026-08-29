@@ -9,8 +9,10 @@ private:
 public:
     Simbolo();
     Simbolo(const char* ValorNuevo);
+    Simbolo(const CadenaManual& ValorNuevo);
 
     void EstablecerValor(const char* ValorNuevo);
+    void EstablecerValor(const CadenaManual& ValorNuevo);
 
     const CadenaManual& ObtenerValor() const;
 
