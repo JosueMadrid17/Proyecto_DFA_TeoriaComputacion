@@ -7,6 +7,7 @@ class QStackedWidget;
 class PaginaCrearAutomata;
 class RegistroAutomatas;
 class PaginaUnionAutomatas;
+class PaginaPruebaCadenas;
 
 class VentanaPrincipal : public QMainWindow {
     Q_OBJECT
@@ -17,6 +18,7 @@ private:
     PaginaCrearAutomata* PaginaCreacion;
     RegistroAutomatas* Registro;
     PaginaUnionAutomatas* PaginaUnion;
+    PaginaPruebaCadenas* PaginaCadenas;
 
     void ConstruirInterfaz();
     void ConstruirPaginaInicio();

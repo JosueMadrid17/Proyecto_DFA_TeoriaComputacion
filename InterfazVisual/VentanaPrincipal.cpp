@@ -1,6 +1,7 @@
 #include "VentanaPrincipal.h"
 #include "PaginaCrearAutomata.h"
 #include "PaginaUnionAutomatas.h"
+#include "PaginaPruebaCadenas.h"
 #include "../Automatas/RegistroAutomatas.h"
 #include <QWidget>
 #include <QStackedWidget>
@@ -29,17 +30,22 @@ void VentanaPrincipal::ConstruirInterfaz() {
 
     PaginaCreacion = new PaginaCrearAutomata(Registro);
     PaginaUnion = new PaginaUnionAutomatas(Registro);
+    PaginaCadenas = new PaginaPruebaCadenas(Registro);
 
     ConstruirPaginaInicio();
 
     Paginas->addWidget(PaginaCreacion);
     Paginas->addWidget(PaginaUnion);
+    Paginas->addWidget(PaginaCadenas);
     Paginas->setCurrentWidget(PaginaInicio);
 
     connect(PaginaCreacion, &PaginaCrearAutomata::SolicitarVolver, this, [this]() {
         Paginas->setCurrentWidget(PaginaInicio);
     });
     connect(PaginaUnion, &PaginaUnionAutomatas::SolicitarVolver, this, [this]() {
+        Paginas->setCurrentWidget(PaginaInicio);
+    });
+    connect(PaginaCadenas, &PaginaPruebaCadenas::SolicitarVolver, this, [this]() {
         Paginas->setCurrentWidget(PaginaInicio);
     });
 }
@@ -105,6 +111,10 @@ void VentanaPrincipal::ConstruirPaginaInicio() {
         Paginas->setCurrentWidget(PaginaUnion);
     });
     QPushButton* BotonPruebaCadenas = new QPushButton("PRUEBA DE CADENAS");
+    connect(BotonPruebaCadenas, &QPushButton::clicked, this, [this]() {
+        PaginaCadenas->ActualizarAutomatasGuardados();
+        Paginas->setCurrentWidget(PaginaCadenas);
+    });
 
     BotonCrearAutomata->setFixedSize(540, 72);
     BotonUnion->setFixedSize(540, 72);
