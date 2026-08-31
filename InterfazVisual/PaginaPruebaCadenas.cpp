@@ -427,7 +427,7 @@ QString PaginaPruebaCadenas::ConstruirProcesoConDelta(ResultadoProcesamiento* Re
         return Texto;
     }
 
-    Texto += "δ̂(";
+    Texto += "δ̂^(";
     Texto += EstadoInicial;
     Texto += ", ε) = ";
     Texto += EstadoInicial;
@@ -448,11 +448,11 @@ QString PaginaPruebaCadenas::ConstruirProcesoConDelta(ResultadoProcesamiento* Re
 
             PrefijoActual += Simbolo;
 
-            Texto += "δ̂(";
+            Texto += "δ̂^(";
             Texto += EstadoInicial;
             Texto += ", ";
             Texto += PrefijoActual;
-            Texto += ") = δ(δ̂(";
+            Texto += ") = δ(δ̂^(";
             Texto += EstadoInicial;
             Texto += ", ";
             Texto += PrefijoAnterior;
